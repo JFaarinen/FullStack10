@@ -5,7 +5,8 @@ const theme = {
         white: '#ffffff',
         primary: '#0366d6',
         bgPrimary: '#e1e4e8',
-        bgSecondary: '#24292e'
+        bgSecondary: '#24292e',
+        error: '#d73a4a'
     },
     fontSizes: {
         body: 14, 
