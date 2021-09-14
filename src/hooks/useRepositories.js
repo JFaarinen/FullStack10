@@ -10,7 +10,6 @@ const useRepositories = () => {
     const fetchRepositories = async () => {
         setLoading(true);
         if (result.data) {
-            console.log(result.data);
             setRepositories(result.data.repositories);
         }
 
