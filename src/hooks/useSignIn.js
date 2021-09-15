@@ -1,15 +1,20 @@
-import {useState} from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN } from '../graphql/queries';
 
 const useSignIn = () => {
-    const [mutate, result] = useMutation(LOGIN);
+    const [mutate, result] = useMutation(LOGIN, {
+        onError: (error) => {
+            console.log(error.graphQLErrors[0].message);
+        }
+    });
 
-    const signIn = async ({username, password}) => {
-        console.log('logging in ', username, password);
-        await mutate({variables: {username, password}});
+    const signIn = async ({username, password}) => { 
+        console.log('called sign in');
+        const data = await mutate({variables: {username, password}});
+        console.log('returning: ', data);
+        return data; 
     }
-    console.log('data ', result.data);
 
     return [signIn, result]
 }

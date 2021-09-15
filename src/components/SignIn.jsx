@@ -52,7 +52,7 @@ const SignIn = () => {
         const {username, password} = values;
         try {
             const {data} = await signIn({username, password});
-            console.log(data);
+            console.log('auth.data: ', data.authorize);
         } catch(e) {
             console.log(e);
         }
