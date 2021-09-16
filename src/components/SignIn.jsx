@@ -55,7 +55,6 @@ const SignIn = () => {
         try {
             const data = await signIn({username, password});
             if (data) {
-                console.log('logged in...');
                 history.push('/');            
             } else {
                 console.log('väärä tunnus!');

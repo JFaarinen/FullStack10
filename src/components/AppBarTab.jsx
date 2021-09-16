@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 });
 
 const AppBarTab = ({text, link}) => {
-    console.log(link);
+    //console.log(link);
     return(
         <View style={styles.container}>
         <Pressable>

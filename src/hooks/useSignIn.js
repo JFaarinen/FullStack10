@@ -1,4 +1,4 @@
-import { useMutation, useApolloClient, ApolloClient } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client';
 import { LOGIN } from '../graphql/mutations';
 import useAuthStorage from './useAuthStorage';
 
