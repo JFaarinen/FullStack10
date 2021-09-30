@@ -1,6 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image, Button } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
 import Text from './Text';
+import theme from '../theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -27,8 +29,27 @@ const styles = StyleSheet.create({
         marginRight: 10,
         width: 50,
         height: 50
+    },
+    button: {
+        color: theme.colors.white,
+        backgroundColor: theme.colors.primary
     }
 });
+
+const handleOpening = (url) => {
+    console.log('opening ', url);
+    WebBrowser.openBrowserAsync(url);
+}
+
+const LinkButton = ({url}) => {
+    return(
+    <Button 
+    title="Open in GitHub" 
+    onPress={() => handleOpening(url)} 
+    style={styles.button} 
+    />
+    );
+};
 
 const parseNumericData = (value) => {
     if (Number(value) < 1000) {
@@ -50,7 +71,8 @@ const RepositoryContainer = ({flexDirection, justify, style, ...props}) => {
     return <View style={containerStyle} {...props} />
 };
 
-const RepositoryItem = ({item}) => {
+const RepositoryItem = ({item, singleItem}) => {
+  
     const BasicData = () => (
         <RepositoryContainer flexDirection='row' justify='basic-data'>
             <Image style={styles.avatar} source={{uri: item.ownerAvatarUrl}}/>
@@ -86,6 +108,7 @@ const RepositoryItem = ({item}) => {
         <View style={styles.container}>
             <BasicData />
             <StatisticList />
+            {singleItem ? <LinkButton url={item.url} /> : null}
         </View>
     );
 }

@@ -39,7 +39,7 @@ const Text = ({color, fontSize, fontWeight, style, ...props}) => {
         fontWeight === 'bold' && styles.fontWeightBold,
         style
     ];
-    return <NativeText style={textStyle} {...props} />;
+    return <NativeText style={textStyle} {...props} testID={'textComponent'} />;
 }
 
 export default Text;
