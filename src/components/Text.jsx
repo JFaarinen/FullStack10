@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
         padding: 5,
         width: 100
     },
+    colorReview: {
+        color: theme.colors.primary
+    },
+
     colorAppbar:  {
         color: theme.colors.white
     },
@@ -34,6 +38,7 @@ const Text = ({color, fontSize, fontWeight, style, ...props}) => {
         styles.text, 
         color === 'textSecondary' && styles.colorTextSecondary,
         color === 'primary' && styles.colorPrimary,
+        color === 'review' && styles.colorReview,
         color === 'appBar' && styles.colorAppbar,
         fontSize === 'subheading' && styles.fontSizeSubHeading,
         fontWeight === 'bold' && styles.fontWeightBold,

@@ -1,40 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Image, Button } from 'react-native';
+import { View, Image, Button } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import Text from './Text';
-import theme from '../theme';
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'flex-start',
-        padding: 10,
-        backgroundColor: 'white',
-        width: 'auto',
-        flex: 1
-    },
-    containerColumn: {
-        paddingTop: 0,
-        flexDirection: 'column'
-    },
-    containerRow: {
-        flexDirection: 'row',
-    },
-    containerEven: {
-        justifyContent: 'space-evenly'
-    },
-    containerBasic: {
-        justifyContent: 'flex-start'
-    },
-    avatar: {
-        marginRight: 10,
-        width: 50,
-        height: 50
-    },
-    button: {
-        color: theme.colors.white,
-        backgroundColor: theme.colors.primary
-    }
-});
+import styles from '../styles';
 
 const handleOpening = (url) => {
     console.log('opening ', url);

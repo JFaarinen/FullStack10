@@ -4,38 +4,71 @@ import { useParams } from 'react-router';
 import RepositoryItem from './RepositoryItem';
 import Text from './Text';
 import useSingleRepository from '../hooks/useSingleRepository';
-import theme from '../theme';
-
-const styles = StyleSheet.create({
-    separator: {
-        height: 10
-    }, 
-    container: {
-      paddingRight: 0
-    }
-});
+import format from 'date-fns/format';
+import styles from '../styles';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const SingleRepositoryContainer = ({repository}) => {
-    console.log(repository);
+    //console.log(repository);
     return (
-        <View style={styles.container}>
-            <RepositoryItem item={repository} singleItem={true} />
+        <View>
+            <View style={styles.container}>
+                <RepositoryItem item={repository} singleItem={true} />
+            </View>
+            <ItemSeparator />
         </View>
+    );
+};
+
+const ReviewContainer = ({flexDirection, justify, style, ...props}) => {
+    const containerStyle = [
+        styles.container, 
+        flexDirection === 'row' && styles.containerRow,
+        flexDirection === 'column' && styles.containerColumn,
+        justify === 'even' && styles.containerEven,
+        justify === 'basic-data' && styles.containerBasic,
+        style
+    ];
+    return <View style={containerStyle} {...props} />
+};
+
+const ReviewItem = ({review}) => {
+    console.log(review);
+    return(
+            <ReviewContainer flexDirection='row' justify='basic-data'>
+                <View style={styles.rating}>
+                    <Text color='review' fontSize='subheading' fontWeight='bold'>{review.rating}</Text>
+                </View>
+                <ReviewContainer flexDirection='column' justify='even'>
+                    <Text fontSize='subheading' fontWeight='bold'>{review.user.username}</Text>
+                    <Text>{format(new Date(review.createdAt), 'dd.MM.yyyy')}</Text>
+                    <Text>{review.text}</Text>
+                </ReviewContainer>
+            </ReviewContainer>
     );
 };
 
 const SingleRepository = () => {
     const id = useParams().id;
     const {repository} = useSingleRepository({id});
-
+    console.log(repository);
+    const reviews = repository 
+        ? repository.reviews.edges.map((e) => e.node) 
+        : [];
+    
     if  (!repository) {
         return <View><Text>Loading...</Text></View>
     }
 
     return (
-        <SingleRepositoryContainer repository={repository} />
+        <FlatList 
+        data={reviews}
+        renderItem={({item}) => <ReviewItem review={item} />}
+        keyExtractor={({ id }) => id}
+        ListHeaderComponent={() => <SingleRepositoryContainer repository={repository} />}
+        ItemSeparatorComponent={() => <ItemSeparator />}
+        />
     );
 };
 
