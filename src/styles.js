@@ -3,10 +3,9 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-        alignItems: 'flex-start',
+        alignItems: 'stretch',
         padding: 10,
         backgroundColor: 'white',
-        width: 'auto',
         flex: 1
     },
     containerColumn: {
@@ -29,7 +28,13 @@ const styles = StyleSheet.create({
     },
     button: {
         color: theme.colors.white,
-        backgroundColor: theme.colors.primary
+        backgroundColor: theme.colors.primary,
+        height: 40,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        elevation: 3
     }, 
 
     separator: {
@@ -49,7 +54,17 @@ const styles = StyleSheet.create({
         bottom: 0, 
         justifyContent: 'center', 
         alignItems: 'center'   
-    }
+    },
+
+    input: {
+        borderStyle: 'solid',
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginTop: 15,
+        paddingLeft: 10,
+        height: 40,
+      },
 });
 
 export default styles;

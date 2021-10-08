@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Button } from 'react-native';
+import { View, Image, Pressable } from 'react-native';
 import * as WebBrowser from 'expo-web-browser';
 import Text from './Text';
 import styles from '../styles';
@@ -11,11 +11,11 @@ const handleOpening = (url) => {
 
 const LinkButton = ({url}) => {
     return(
-    <Button 
-    title="Open in GitHub" 
-    onPress={() => handleOpening(url)} 
-    style={styles.button} 
-    />
+        <Pressable onPress={() => handleOpening(url)}>
+            <View style={styles.button}>
+                <Text element='button'>Open in GitHub</Text>
+            </View>
+        </Pressable>
     );
 };
 

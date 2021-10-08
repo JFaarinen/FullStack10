@@ -30,16 +30,21 @@ const styles = StyleSheet.create({
     },
     fontWeightBold: {
         fontWeight: theme.fontWeights.bold
+    },
+    button: {
+        color: theme.colors.white,
+        fontWeight: theme.fontWeights.bold
     }
 });
 
-const Text = ({color, fontSize, fontWeight, style, ...props}) => {
+const Text = ({color, element, fontSize, fontWeight, style, ...props}) => {
     const textStyle = [
         styles.text, 
         color === 'textSecondary' && styles.colorTextSecondary,
         color === 'primary' && styles.colorPrimary,
         color === 'review' && styles.colorReview,
         color === 'appBar' && styles.colorAppbar,
+        element === 'button' && styles.button,
         fontSize === 'subheading' && styles.fontSizeSubHeading,
         fontWeight === 'bold' && styles.fontWeightBold,
         style
