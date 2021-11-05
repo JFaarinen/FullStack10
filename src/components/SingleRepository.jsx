@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { useParams } from 'react-router';
 import RepositoryItem from './RepositoryItem';
 import Text from './Text';
@@ -34,7 +34,7 @@ const ReviewContainer = ({flexDirection, justify, style, ...props}) => {
 };
 
 const ReviewItem = ({review}) => {
-    console.log(review);
+    console.log('SingleRepository.jsx review ', review);
     return(
             <ReviewContainer flexDirection='row' justify='basic-data'>
                 <View style={styles.rating}>
@@ -52,7 +52,7 @@ const ReviewItem = ({review}) => {
 const SingleRepository = () => {
     const id = useParams().id;
     const {repository} = useSingleRepository({id});
-    console.log(repository);
+    console.log('SingleRepository.jsx repository ', repository);
     const reviews = repository 
         ? repository.reviews.edges.map((e) => e.node) 
         : [];

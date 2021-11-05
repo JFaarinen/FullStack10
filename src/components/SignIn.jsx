@@ -1,10 +1,10 @@
 import React from 'react';
-import { useHistory } from 'react-router';
+import { useHistory } from 'react-router-native';
 import FormikTextInput from './FormikTextInput';
-import { Formik, useField } from 'formik';
-import { View, Button, StyleSheet } from 'react-native';
+import { Formik } from 'formik';
+import { View, Button } from 'react-native';
 import * as yup from 'yup';
-import theme from '../theme';
+import styles from '../styles';
 import useSignIn from '../hooks/useSignIn';
 
 const validationSchema = yup.object().shape({
@@ -16,26 +16,12 @@ const validationSchema = yup.object().shape({
     .required('password is required!')
 });
 
-const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        flexShrink: 1,
-        backgroundColor: theme.colors.bgPrimary,
-        padding: 10
-    },
-    form: {
-        backgroundColor: theme.colors.white
-    }
-});
-
 const initialValues = {
     username: '',
     password: ''
 }
 
 const SignInForm = ({ onSubmit }) => {
-    const [usernameField, usernameMeta, usernameHelpers] = useField('username');
-    const [passwordField, passwordMeta, passwordHelpers] = useField('password');
 
     return (
         <View style={styles.container}>
@@ -51,6 +37,7 @@ const SignIn = () => {
     const history = useHistory();
 
     const onSubmit = async (values) => {
+        console.log('login submit called...');
         const {username, password} = values;
         try {
             const data = await signIn({username, password});
@@ -67,12 +54,11 @@ const SignIn = () => {
 
     return (
         <Formik 
-        style={styles.form} 
-        initialValues={initialValues} 
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-        >
-            {({handleSubmit}) => <SignInForm onSubmit={handleSubmit} />}
+            style={styles.form} 
+            initialValues={initialValues} 
+            onSubmit={onSubmit}
+            validationSchema={validationSchema}>
+                {({handleSubmit}) => <SignInForm onSubmit={handleSubmit} />}
         </Formik>
     );
 };

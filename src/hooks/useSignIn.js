@@ -10,9 +10,10 @@ const useSignIn = () => {
             console.log(error.graphQLErrors[0].message);
         }
     });
+    console.log('called useSignIn');
 
     const signIn = async ({username, password}) => { 
-        //console.log('called sign in');
+        console.log('called sign in');
         const {data} = await mutate({variables: {username, password}});
         //console.log('returning: ', data.authorize.accessToken);
         if (data) {

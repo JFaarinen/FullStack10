@@ -5,7 +5,7 @@ import Text from './Text';
 import styles from '../styles';
 
 const handleOpening = (url) => {
-    console.log('opening ', url);
+    console.log('opening url: ', url);
     WebBrowser.openBrowserAsync(url);
 }
 

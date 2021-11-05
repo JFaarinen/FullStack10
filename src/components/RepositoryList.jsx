@@ -1,38 +1,42 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-native';
-import { FlatList, View, StyleSheet, Pressable  } from 'react-native';
+import { Pressable } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 import useRepositories from '../hooks/useRepositories';
-
-const styles = StyleSheet.create({
-    separator: {
-        height: 10
-    }, 
-    container: {
-      paddingRight: 0
-    }
-});
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import RepositoryListContainer from './RepositoryListContainer';
 
 const RepositoryList = () => {
-  const { repositories } = useRepositories();
+  const [order, setOrder] = useState('date');
+  const [search, setSearch] = useState('');
+  
+  if (order === 'date') {
+    setOrder({
+      orderBy: 'CREATED_AT',
+      orderDirection: 'DESC',
+    })
+  } else if (order === 'highest') {
+    setOrder({
+      orderBy: 'RATING_AVERAGE',
+      orderDirection: 'DESC',
+    })
+  } else if (order === 'lowest') {
+    setOrder({
+      orderBy: 'RATING_AVERAGE',
+      orderDirection: 'ASC',
+    })
+  }
 
-  return (
-    <RepositoryListContainer repositories={repositories} />
-    );
-};
-
-export const RepositoryListContainer = ({ repositories }) => {
-  const history = useHistory();
-  const repositoryNodes = repositories 
-  ? repositories.edges.map((edge) => edge.node)
-  : [];
+  const { repositories } = useRepositories(order);
 
   const PressItem = (item) => {
     console.log(`${item.id} pressed`);
     history.push(`/repository/${item.id}`);
   }
+
+  const history = useHistory();
+  const repositoryNodes = repositories 
+  ? repositories.edges.map((edge) => edge.node)
+  : [];
 
   const renderRepositoryItem =({item}) => {
     return ( 
@@ -42,14 +46,14 @@ export const RepositoryListContainer = ({ repositories }) => {
   };
 
   return (
-  <FlatList 
-  style={styles.container} 
-  data={repositoryNodes}
-  renderItem={renderRepositoryItem}
-  ItemSeparatorComponent={ItemSeparator}
-  keyExtractor={item => item.id}
-  />
-  );
-}
+    <RepositoryListContainer 
+    repositories={repositories} 
+    repositoryNodes={repositoryNodes}
+    renderRepositoryItem={renderRepositoryItem}
+    setOrder={setOrder}
+    setSearch={setSearch}
+    />
+    );
+};
 
 export default RepositoryList;

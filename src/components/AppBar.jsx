@@ -1,70 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
-import AppBarTab from './AppBarTab';
-import theme from '../theme';
+import React, { useContext } from 'react';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { Link } from 'react-router-native';
 import Constants from 'expo-constants';
 import { useQuery, useApolloClient } from '@apollo/client';
+import theme from '../theme';
 import { GET_USER } from '../graphql/queries';
-import useAuthStorage from '../hooks/useAuthStorage';
-import Text from './Text';
+import AppBarTab from './AppBarTab';
+import AuthStorageContext from '../contexts/AuthStorageContext';
 
 const styles = StyleSheet.create({
-    container: {
-        paddingTop: Constants.statusBarHeight*2,
-        paddingLeft: 5,
-        paddingBottom: 10,
-        backgroundColor: theme.colors.bgSecondary,
-        flexDirection: 'row'
+    appBar: {
+      paddingTop: Constants.statusBarHeight,
+      backgroundColor: theme.colors.bgSecondary,
+      display: "flex",
+      flexDirection: "row",
     }
 });
 
 const AppBar = () => {
-    const [user, setUser] = useState(null);
-    const result = useQuery(GET_USER);
-    const authStorage = useAuthStorage();
-    const client = useApolloClient();
+  const authStorage = useContext(AuthStorageContext);
+  const apolloClient = useApolloClient();
 
-    useEffect(() => {
-        console.log('effect...')
-        console.log('user at start', user);
-        console.log(result.data);
-        if (result.data) {
-            setUser(result.data.authorizedUser);
-            console.log('set user ', user);
-        }
-        if (user) {
-            console.log('user ', user);
-        } else {
-            console.log('no user');
-        }
-        console.log('user at end', user);
-    }, [result]);
+  const accessToken = authStorage.getAccessToken();
 
-    const signOut = async () => {
-        console.log('logging out...');
-        await authStorage.removeAccessToken();
-        client.resetStore();
+  let authorizedUser = null;
+
+  if (accessToken) {
+    const { data } = useQuery(GET_USER, {
+      fetchPolicy: 'cache-and-network'
+    });
+
+    if (data) {
+      data.authorizedUser !== null ?
+        authorizedUser = data.authorizedUser
+        :
+        authorizedUser = null;
     }
 
-    if (result.loading) {
-        return <Text>loading...</Text>
-    }
+  }
 
-    return(
-    <View style={styles.container}>
-        <ScrollView horizontal>
-            <AppBarTab text='Repositiories' link='/'/>
-            {!user 
-            ? <AppBarTab text='SignIn' link='/signIn' />
-            : <Pressable onPress={signOut}><Text 
-            color='appBar' 
-            fontWeight='bold'
-            fontSize='subheading'>
-                Sign out</Text></Pressable>}
-            <AppBarTab text='Review' link='/review' />                  
-        </ScrollView>
+  const signOut = async () => {
+    await authStorage.removeAccessToken();
+    await apolloClient.resetStore();
+  };
+
+  return (
+    <View style={styles.appBar}>
+      <ScrollView horizontal>
+        <Link to='/' text={'Repositories'} component={AppBarTab}/>
+        {authorizedUser ?
+          <>
+            <Link to='/repositoryReview' text='Review' component={AppBarTab} />
+            <Link to='/MyReviews' text='My reviews' component={AppBarTab} />
+            <Link to='/' text={'Sign out'} component={AppBarTab} onPress={signOut}/>
+          </>
+          :
+          <>
+            <Link to='/signIn' text='SignIn' component={AppBarTab} />
+            <Link to='/signUp' text='SignUp' component={AppBarTab} />
+          </>
+        }
+      </ScrollView>
     </View>
-    );
-}
+  );
+};
 
 export default AppBar;

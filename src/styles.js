@@ -2,11 +2,16 @@ import theme from './theme';
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+    form: {
+        backgroundColor: theme.colors.white
+    },
+
     container: {
         alignItems: 'stretch',
         padding: 10,
         backgroundColor: 'white',
-        flex: 1
+        flex: 1,
+        zIndex: 50
     },
     containerColumn: {
         paddingTop: 0,
