@@ -26,7 +26,7 @@ const RepositoryList = () => {
     })
   }
 
-  const { repositories } = useRepositories(order);
+  const { repositories } = useRepositories(order, search);
 
   const PressItem = (item) => {
     console.log(`${item.id} pressed`);

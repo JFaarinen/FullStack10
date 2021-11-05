@@ -4,15 +4,15 @@ import { useDebounce } from 'use-debounce';
 
 const SearchMenu = ({setSearch}) => {
     const [searchValue, setSearchValue] = useState('');
-    const [debounce] = useDebounce(searchValue, 500);
+    const [value] = useDebounce(searchValue, 500);
 
-    const handleChange = ({value}) => {
+    const handleChange = (value) => {
         setSearchValue(value);
     }
 
     useEffect(() => {
-        setSearch(debounce);
-    }, [debounce]);
+        setSearch(value);
+    }, [value]);
 
     return (
         <Searchbar

@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
-const useRepositories = (sort) => {
+const useRepositories = (sort, search) => {
     const [repositories, setRepositories] = useState();
     const [loading, setLoading] = useState(false);
-    const variables = {...sort};
+    const variables = {...sort, searchKeyword: search};
     const result = useQuery(GET_REPOSITORIES, {
         variables: variables, 
         fetchPolicy: 'cache-and-network' 
