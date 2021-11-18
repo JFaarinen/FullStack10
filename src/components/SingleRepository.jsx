@@ -51,7 +51,7 @@ const ReviewItem = ({review}) => {
 
 const SingleRepository = () => {
     const id = useParams().id;
-    const {repository} = useSingleRepository({id});
+    const {repository} = useSingleRepository({id, first: 8});
     console.log('SingleRepository.jsx repository ', repository);
     const reviews = repository 
         ? repository.reviews.edges.map((e) => e.node) 

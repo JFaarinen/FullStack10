@@ -2,29 +2,46 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_REPOSITORIES } from '../graphql/queries';
 
-const useRepositories = (sort, search) => {
-    const [repositories, setRepositories] = useState();
-    const [loading, setLoading] = useState(false);
-    const variables = {...sort, searchKeyword: search};
-    const result = useQuery(GET_REPOSITORIES, {
+const useRepositories = (sort, search, first) => {
+    const variables = {...sort, searchKeyword: search, first: first};
+    const {data, loading, fetchMore, ...result } = useQuery(GET_REPOSITORIES, {
         variables: variables, 
         fetchPolicy: 'cache-and-network' 
     });
 
-    const fetchRepositories = async () => {
-        setLoading(true);
-        if (result.data) {
-            setRepositories(result.data.repositories);
+    const handleFetchMore = () => {
+        const canFetchMore = !loading &&  data?.repositories.pageInfo.hasNextPage;
+        if(!canFetchMore) {
+            return;
         }
 
-        setLoading(false);
+        fetchMore({
+            query: GET_REPOSITORIES,
+            variables: {
+                after: data.repositories.pageInfo.endCursor,
+                ...variables
+            },
+            updateQuery: (previousResult, { fetchMoreResult }) => {
+                const nextResult = {
+                    repositories: {
+                        ...fetchMoreResult.repositories,
+                        edges: [
+                            ...previousResult.repositories.edges,
+                            ...fetchMoreResult.repositories.edges
+                        ]
+                    }
+                };
+                return nextResult;
+            }
+        });
     };
 
-    useEffect(() => {
-        fetchRepositories();
-    }, [result]);
-
-    return { repositories, loading, refetch: fetchRepositories };
+    return { 
+        repositories: data ? data.repositories : undefined, 
+        fetchMore: handleFetchMore, 
+        loading, 
+        ...result
+    };
 };
 
 export default useRepositories;

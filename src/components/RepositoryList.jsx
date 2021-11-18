@@ -26,7 +26,11 @@ const RepositoryList = () => {
     })
   }
 
-  const { repositories } = useRepositories(order, search);
+  const { repositories, fetchMore } = useRepositories({first: 8, order, search});
+
+  const onEndReach = () => {
+    fetchMore();
+  }
 
   const PressItem = (item) => {
     console.log(`${item.id} pressed`);
@@ -49,6 +53,7 @@ const RepositoryList = () => {
     <RepositoryListContainer 
     repositories={repositories} 
     repositoryNodes={repositoryNodes}
+    onEndReach={onEndReach}
     renderRepositoryItem={renderRepositoryItem}
     setOrder={setOrder}
     setSearch={setSearch}

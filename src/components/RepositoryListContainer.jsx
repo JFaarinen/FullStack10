@@ -30,7 +30,7 @@ class RepositoryListContainer extends React.Component {
     };
   
     render() {
-      const {repositoryNodes, renderRepositoryItem} =  this.props;
+      const {repositoryNodes, renderRepositoryItem, onEndReach} =  this.props;
       return (
         <View style={styles.container}>
         <FlatList 
@@ -40,6 +40,8 @@ class RepositoryListContainer extends React.Component {
             keyExtractor={item => item.id}
             ListHeaderComponent={this.listHeader}
             ListHeaderComponentStyle={{zIndex: 50}}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
         />
         </View>
         );

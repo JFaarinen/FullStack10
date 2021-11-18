@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client';
 
 export const REPOSITORY_DATA = gql`
-  fragment RepositoryData on Repository {
+  fragment repositoryData on Repository {
     id
     name
     ownerName
@@ -16,4 +16,17 @@ export const REPOSITORY_DATA = gql`
     language
     ownerAvatarUrl
   }
+`;
+
+export const REVIEW_DATA = gql`
+fragment reviewData on Review {
+  id
+  text 
+  rating 
+  createdAt 
+  user {
+    id 
+    username 
+  }
+}
 `;
